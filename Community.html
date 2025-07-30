@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lol </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8B4513, #D2691E, #F4A460);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #ff6b35;
+        }
+
+        .sign-in-btn {
+            background: #007bff;
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .sign-in-btn:hover {
+            background: #0056b3;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(./png-clipart-sofa-red-2-seat-sofa-illustration-thumbnail.png);
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .content-tabs {
+            display: flex;
+            border-bottom: 3px solid #e9ecef;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #666;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .tab.active {
+            color: #ff6b35;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #ff6b35;
+        }
+
+        /* Ask Question Button */
+        .ask-question-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
+            transition: all 0.3s;
+            z-index: 50;
+        }
+
+        .ask-question-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px) scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background: #f8f9fa;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #007bff;
+            background: white;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 1rem;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9fa;
+            color: #666;
+        }
+
+        .file-input-label:hover {
+            border-color: #007bff;
+            background: #e3f2fd;
+            color: #007bff;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #dee2e6;
+        }
+
+        .btn-cancel:hover {
+            background: #e9ecef;
+        }
+
+        .btn-post {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-post:hover {
+            background: #0056b3;
+        }
+
+        /* Questions List */
+        .questions-container {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid #ff6b35;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .question-meta {
+            flex-grow: 1;
+        }
+
+        .question-author {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .question-time {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .question-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .question-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .question-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-actions {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .action-btn:hover {
+            color: #ff6b35;
+        }
+
+        .action-btn.liked {
+            color: #ff6b35;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #999;
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .ask-question-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 0.75rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="C:\Users\hyper\OneDrive\Desktop\html css day2\6fd0f3c5b901bc67fa14a610f6c2c4be9fbbd10d.png"
+                    alt="Your Logo" style="height: 40px; width: auto;">
+                <span>lol</span>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">Community</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#" class="sign-in-btn">Sign in</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Community</h1>
+            <p>Share knowledge, ask questions, and connect with furniture enthusiasts</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="content-tabs">
+            <button class="tab active" onclick="switchTab('home')">Home</button>
+            <button class="tab" onclick="switchTab('activity')">My activity</button>
+        </div>
+
+        <div id="questionsContainer" class="questions-container">
+            <!-- Sample question to show the layout -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="user-avatar">MW</div>
+                    <div class="question-meta">
+                        <div class="question-author">Marie Warren</div>
+                        <div class="question-time">2 hours ago</div>
+                    </div>
+                </div>
+                <h3 class="question-title">What's the best type of wood used for making chairs?</h3>
+                <div class="question-description">
+                    Woody chairs come in various designs and forms to suit different preferences and needs. They can
+                    range from traditional and classic designs with intricate details, ornate carvings, and curved
+                    elements, to modern and minimalist styles with clean lines and sleek profiles.
+                </div>
+                <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><rect width='600' height='400' fill='%23f0f0f0'/><rect x='50' y='100' width='120' height='200' rx='10' fill='%23d4a574'/><rect x='200' y='80' width='100' height='240' rx='8' fill='%238b4513'/><rect x='330' y='90' width='110' height='220' rx='10' fill='%23a0522d'/><rect x='470' y='85' width='100' height='230' rx='8' fill='%23daa520'/></svg>"
+                    alt="Wooden chairs" class="question-image">
+                <div class="question-actions">
+                    <button class="action-btn">
+                        <span>👍</span>
+                        <span>1</span>
+                    </button>
+                    <button class="action-btn">
+                        <span>💬</span>
+                        <span>0</span>
+                    </button>
+                    <button class="action-btn">
+                        <span>📤</span>
+                        <span>Share</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-state-icon">💭</div>
+            <h3>No questions yet</h3>
+            <p>Be the first to ask a question in our furniture community!</p>
+            <button class="btn btn-post" onclick="openModal()">Ask the first question</button>
+        </div>
+    </main>
+
+    <!-- Ask Question Button -->
+    <button class="ask-question-btn" onclick="openModal()">
+        ❓ Ask Question
+    </button>
+
+    <!-- Modal -->
+    <div id="questionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ask Question</h2>
+            </div>
+            <form id="questionForm">
+                <div class="form-group">
+                    <input type="text" id="questionTitle" class="form-input" placeholder="Add question" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="questionDescription" class="form-input form-textarea"
+                        placeholder="Add description"></textarea>
+                </div>
+                <div class="form-group">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="questionImage" class="file-input" accept="image/*">
+                        <label for="questionImage" class="file-input-label">
+                            <span id="fileLabel">Choose file - No file chosen</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-post">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let questions = [];
+        let questionIdCounter = 1;
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('questionModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('questionModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('questionForm').reset();
+            document.getElementById('fileLabel').textContent = 'Choose file - No file chosen';
+        }
+
+        // File input handling
+        document.getElementById('questionImage').addEventListener('change', function (e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+            document.getElementById('fileLabel').textContent = `Choose file - ${fileName}`;
+        });
+
+        // Form submission
+        document.getElementById('questionForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const title = document.getElementById('questionTitle').value.trim();
+            const description = document.getElementById('questionDescription').value.trim();
+            const imageFile = document.getElementById('questionImage').files[0];
+
+            if (!title) return;
+
+            const question = {
+                id: questionIdCounter++,
+                title: title,
+                description: description,
+                author: 'Anonymous User',
+                avatar: 'AU',
+                time: 'just now',
+                likes: 0,
+                comments: 0,
+                image: null
+            };
+
+            // Handle image if uploaded
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    question.image = e.target.result;
+                    addQuestion(question);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                addQuestion(question);
+            }
+        });
+
+        function addQuestion(question) {
+            questions.unshift(question); // Add to beginning of array
+            renderQuestions();
+            closeModal();
+
+            // Show success animation
+            showSuccessMessage();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            if (questions.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            container.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            container.innerHTML = questions.map(question => `
+                <div class="question-card" style="animation: slideInUp 0.5s ease-out;">
+                    <div class="question-header">
+                        <div class="user-avatar">${question.avatar}</div>
+                        <div class="question-meta">
+                            <div class="question-author">${question.author}</div>
+                            <div class="question-time">${question.time}</div>
+                        </div>
+                    </div>
+                    <h3 class="question-title">${question.title}</h3>
+                    ${question.description ? `<div class="question-description">${question.description}</div>` : ''}
+                    ${question.image ? `<img src="${question.image}" alt="Question image" class="question-image">` : ''}
+                    <div class="question-actions">
+                        <button class="action-btn" onclick="toggleLike(${question.id})">
+                            <span>👍</span>
+                            <span id="likes-${question.id}">${question.likes}</span>
+                        </button>
+                        <button class="action-btn">
+                            <span>💬</span>
+                            <span>${question.comments}</span>
+                        </button>
+                        <button class="action-btn">
+                            <span>📤</span>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleLike(questionId) {
+            const question = questions.find(q => q.id === questionId);
+            if (question) {
+                question.likes += 1;
+                document.getElementById(`likes-${questionId}`).textContent = question.likes;
+
+                // Add visual feedback
+                const btn = event.target.closest('.action-btn');
+                btn.classList.add('liked');
+                setTimeout(() => btn.classList.remove('liked'), 200);
+            }
+        }
+
+        function showSuccessMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 30px;
+                background: #28a745;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 20px rgba(40,167,69,0.3);
+                z-index: 2000;
+                animation: slideInRight 0.5s ease-out;
+            `;
+            message.textContent = '✅ Question posted successfully!';
+            document.body.appendChild(message);
+
+            setTimeout(() => {
+                message.style.animation = 'slideOutRight 0.5s ease-out forwards';
+                setTimeout(() => document.body.removeChild(message), 500);
+            }, 3000);
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (tab === 'activity') {
+                // Show user's own questions only
+                const userQuestions = questions.filter(q => q.author === 'Anonymous User');
+                displayFilteredQuestions(userQuestions);
+            } else {
+                // Show all questions
+                renderQuestions();
+            }
+        }
+
+        function displayFilteredQuestions(filteredQuestions) {
+            const container = document.getElementById('questionsContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            if (filteredQuestions.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <div class="empty-state-icon">📝</div>
+                    <h3>No activity yet</h3>
+                    <p>You haven't asked any questions yet. Start by asking your first question!</p>
+                    <button class="btn btn-post" onclick="openModal()">Ask a question</button>
+                `;
+                return;
+            }
+
+            container.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            container.innerHTML = filteredQuestions.map(question => `
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="user-avatar">${question.avatar}</div>
+                        <div class="question-meta">
+                            <div class="question-author">${question.author}</div>
+                            <div class="question-time">${question.time}</div>
+                        </div>
+                    </div>
+                    <h3 class="question-title">${question.title}</h3>
+                    ${question.description ? `<div class="question-description">${question.description}</div>` : ''}
+                    ${question.image ? `<img src="${question.image}" alt="Question image" class="question-image">` : ''}
+                    <div class="question-actions">
+                        <button class="action-btn" onclick="toggleLike(${question.id})">
+                            <span>👍</span>
+                            <span id="likes-${question.id}">${question.likes}</span>
+                        </button>
+                        <button class="action-btn">
+                            <span>💬</span>
+                            <span>${question.comments}</span>
+                        </button>
+                        <button class="action-btn">
+                            <span>📤</span>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('questionModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && document.getElementById('questionModal').classList.contains('show')) {
+                closeModal();
+            }
+        });
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInUp {
+                from {
+                    transform: translateY(30px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize the page
+        renderQuestions();
+    </script>
+</body>
+
+</html>
